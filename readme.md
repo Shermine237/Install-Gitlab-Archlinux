@@ -10,203 +10,196 @@
 </ul>
 <br/>
 <h2>Installation</h2>
-<ol>
-    <li>Postgres</li>
-<br/>
+    
+<h3>1- Postgres</h3>
 <p>
-Install postgres
-[RUN] sudo pacman -Sy postgresql
+Install postgres<br/>
+<code>sudo pacman -Sy postgresql</code>
 
-Run service
-[RUN] sudo systemctl enable postgresql.service
-[RUN] sudo systemctl start postgresql.service
+Run service<br/>
+<code>sudo systemctl enable postgresql.service</code><br/>
+<code>sudo systemctl start postgresql.service</code><br/>
 
-Set a password to postgres user
-[RUN] sudo passwd postgres
+Set a password to postgres user<br/>
+<code>sudo passwd postgres</code><br/>
 
-Login to postres
-[RUN] su -l postgres
+Login to postgres<br/>
+<code>su -l postgres</code><br/>
 
-Init database
-[RUN] initdb -D /var/lib/postgres/data
+Init database<br/>
+<code>initdb -D /var/lib/postgres/data</code><br/>
 
-Create gitlab database and user
-[RUN] psql -d template1
-[RUN] CREATE USER gitlab WITH PASSWORD 'your_password_here';
-[RUN] ALTER USER gitlab SUPERUSER;
-[RUN] CREATE DATABASE gitlabhq_production OWNER gitlab;
-[RUN] \q
+Create gitlab database and user<br/>
+<code>psql -d template1</code><br/>
+<code>CREATE USER gitlab WITH PASSWORD 'your_password_here';</code><br/>
+<code>ALTER USER gitlab SUPERUSER;</code><br/>
+<code>CREATE DATABASE gitlabhq_production OWNER gitlab;</code><br/>
+<code>\q</code><br/>
 </p>
 
-    <li>Redis</li>
-<br/>
+<h3>2- Redis</h3>
 <p>
-Install redis
-[RUN] sudo pacman -Sy redis
+Install redis<br/>
+<code>sudo pacman -Sy redis</code><br/>
 
-Configuration
-[RUN] vim /etc/redis/redis.conf
-[EDIT] unixsocket /run/redis/redis.sock
+Configuration<br/>
+<code>vim /etc/redis/redis.conf</code><br/>
+[EDIT] unixsocket /run/redis/redis.sock<br/>
 [EDIT] unixsocketperm 770
 
-Start redis service
-[RUN] sudo systemctl enable redis.service
-[RUN] sudo systemctl start redis.service
+Start redis service<br/>
+<code>sudo systemctl enable redis.service</code><br/>
+<code>sudo systemctl start redis.service</code>
 </p>
 
-    <li>Ruby</li>
-<br/>
+<h3>3- Ruby</h3>
 <p>
-Install ruby
-[RUN] sudo pacman -Sy ruby
+Install ruby<br/>
+<code>sudo pacman -Sy ruby</code>
 </p>
 
-    <li>Gitlab</li>
-<br/>
+<h3>4- Gitlab</h3>
 <p>
-Install gitlab
-[RUN] sudo pacman -Sy gitlab
+Install gitlab<br/>
+<code>sudo pacman -Sy gitlab</code><br/>
 
-Configure host and port
-[RUN] sudo vim /etc/webapps/gitlab/gitlab.yml
+Configure host and port<br/>
+<code>sudo vim /etc/webapps/gitlab/gitlab.yml</code><br/>
 
-Custom port for Puma
-[RUN] sudo vim /etc/webapps/gitlab/puma.rb
-[EDIT] bind 'unix:///run/gitlab/gitlab.socket'
-[EDIT] bind 'tcp://127.0.0.1:8080'
+Custom port for Puma<br/>
+<code>sudo vim /etc/webapps/gitlab/puma.rb</code><br/>
+[EDIT] bind 'unix:///run/gitlab/gitlab.socket'<br/>
+[EDIT] bind 'tcp://127.0.0.1:8080'<br/>
 
-Configure Secret strings
-[RUN] sudo su
-[RUN] mkdir /etc/webapps/gitlab
-[RUN] mkdir /etc/webapps/gitlab-shell
-[RUN] hexdump -v -n 64 -e '1/1 "%02x"' /dev/urandom > /etc/webapps/gitlab/secret
-[RUN] chmod 640 /etc/webapps/gitlab/secret
-[RUN] hexdump -v -n 64 -e '1/1 "%02x"' /dev/urandom > /etc/webapps/gitlab-shell/secret
-[RUN] chmod 640 /etc/webapps/gitlab-shell/secret
-[RUN] su - user
+Configure Secret strings<br/>
+<code>sudo su</code><br/>
+<code>mkdir /etc/webapps/gitlab</code><br/>
+<code>mkdir /etc/webapps/gitlab-shell</code><br/>
+<code>hexdump -v -n 64 -e '1/1 "%02x"' /dev/urandom > /etc/webapps/gitlab/secret</code><br/>
+<code>chmod 640 /etc/webapps/gitlab/secret</code><br/>
+<code>hexdump -v -n 64 -e '1/1 "%02x"' /dev/urandom > /etc/webapps/gitlab-shell/secret</code><br/>
+<code>chmod 640 /etc/webapps/gitlab-shell/secret</code><br/>
+<code>su - user</code><br/>
 
-Configure redis
-[RUN] vim /etc/webapps/gitlab/resque.yml
-[EDIT]
-development:
-  url: unix:/run/redis/redis.sock
-test:
-  url: unix:/run/redis/redis.sock
-production:
-  url: unix:/run/redis/redis.sock
+Configure redis<br/>
+<code>vim /etc/webapps/gitlab/resque.yml</code><br/>
+[EDIT]<br/>
+development:<br/>
+  url: unix:/run/redis/redis.sock<br/>
+test:<br/>
+  url: unix:/run/redis/redis.sock<br/>
+production:<br/>
+  url: unix:/run/redis/redis.sock<br/>
 
-Configure database
-[RUN] vim /etc/webapps/gitlab/database.yml
-[EDIT]
-#
-# PRODUCTION
-#
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: gitlabhq_production
-  pool: 10
-  username: gitlab
-  password: "your_password_here"
-  # host: localhost
-  # port: 5432
-  socket: /run/postgresql/.s.PGSQL.5432
+Configure database<br/>
+<code>vim /etc/webapps/gitlab/database.yml</code><br/>
+[EDIT]<br/>
+#<br/>
+#PRODUCTION<br/>
+#<br/>
+production:<br/>
+  adapter: postgresql<br/>
+  encoding: unicode<br/>
+  database: gitlabhq_production<br/>
+  pool: 10<br/>
+  username: gitlab<br/>
+  password: "your_password_here"<br/>
+  #host: localhost<br/>
+  #port: 5432<br/>
+  socket: /run/postgresql/.s.PGSQL.5432<br/>
 
-Run gitlab-gitaly.service
-[RUN] sudo systemctl enable gitlab-gitaly.service
-[RUN] sudo systemctl start gitlab-gitaly.service
+Run gitlab-gitaly.service<br/>
+<code>sudo systemctl enable gitlab-gitaly.service</code><br/>
+<code>sudo systemctl start gitlab-gitaly.service</code><br/>
 
-Initialize gitlab database
-[RUN] cd /usr/share/webapps/gitlab
-[RUN] sudo -u gitlab $(cat environment | xargs) bundle-2.7 exec rake gitlab:setup
+Initialize gitlab database<br/>
+<code>cd /usr/share/webapps/gitlab</code><br/>
+<code>sudo -u gitlab $(cat environment | xargs) bundle-2.7 exec rake gitlab:setup</code>
 </p>
 
-    <li>Nginx</li>
-<br/>
+<h3>5- Nginx</h3>
 <p>
-Install nginx
-sudo pacman -Sy nginx
+Install nginx<br/>
+<code>sudo pacman -Sy nginx</code><br/>
 
-Run nginx
-[RUN] sudo systemctl enable nginx.service
-[RUN] sudo systemctl start nginx.service
+Run nginx<br/>
+<code>sudo systemctl enable nginx.service</code><br/>
+<code>sudo systemctl start nginx.service</code><br/>
 
-Configure
-[RUN] sudo mkdir /etc/nginx/sites-available/
-[RUN] sudo vim /etc/nginx/sites-available/gitlab
-[EDIT]
-upstream gitlab-workhorse {
-  server unix:/run/gitlab/gitlab-workhorse.socket fail_timeout=0;
-}
+Configure<br/>
+<code>sudo mkdir /etc/nginx/sites-available/</code><br/>
+<code>sudo vim /etc/nginx/sites-available/gitlab</code><br/>
+[EDIT]<br/>
+upstream gitlab-workhorse {<br/>
+  server unix:/run/gitlab/gitlab-workhorse.socket fail_timeout=0;<br/>
+}<br/>
+<br/>
+server {<br/>
+  listen 80;                  # IPv4 HTTP<br/>
+  #listen 443 ssl http2;      # uncomment to enable IPv4 HTTPS + HTTP/2<br/>
+  #listen [::]:80;            # uncomment to enable IPv6 HTTP<br/>
+  #listen [::]:443 ssl http2; # uncomment to enable IPv6 HTTPS + HTTP/2<br/>
+  server_name example.com;<br/>
+<br/>
+  access_log  /var/log/gitlab/nginx_access.log;<br/>
+  error_log   /var/log/gitlab/nginx_error.log;<br/>
+<br/>
+  #ssl_certificate ssl/example.com.crt;<br/>
+  #ssl_certificate_key ssl/example.com.key;<br/>
+<br/>
+  location ~ ^/(assets)/ {<br/>
+    root /usr/share/webapps/gitlab/public;<br/>
+    gzip_static on; # to serve pre-gzipped version<br/>
+    expires max;<br/>
+    add_header Cache-Control public;<br/>
+  }<br/>
+<br/>
+  location / {<br/>
+      # unlimited upload size in nginx (so the setting in GitLab applies)<br/>
+      client_max_body_size 0;<br/>
+<br/>
+      # proxy timeout should match the timeout value set in /etc/webapps/gitlab/puma.rb<br/>
+      proxy_read_timeout 60;<br/>
+      proxy_connect_timeout 60;<br/>
+      proxy_redirect off;<br/>
+<br/>
+      proxy_set_header Host $http_host;<br/>
+      proxy_set_header X-Real-IP $remote_addr;<br/>
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;<br/>
+      proxy_set_header X-Forwarded-Proto $scheme;<br/>
+<br/>
+      #proxy_set_header X-Forwarded-Ssl on;<br/>
+<br/>
+      proxy_pass http://gitlab-workhorse;<br/>
+  }<br/>
+<br/>
+  error_page 404 /404.html;<br/>
+  error_page 422 /422.html;<br/>
+  error_page 500 /500.html;<br/>
+  error_page 502 /502.html;<br/>
+  error_page 503 /503.html;<br/>
+  location ~ ^/(404|422|500|502|503)\.html$ {<br/>
+    root /usr/share/webapps/gitlab/public;<br/>
+    internal;<br/>
+  }<br/>
+}<br/>
+<br/>
+Add gitlab site to nginx<br/>
+<code>vim /etc/nginx/nginx.conf</code><br/>
+[EDIT ADD IN HTTP BLOCK]<br/>
+include /etc/nginx/sites-available/*;<br/>
 
-server {
-  listen 80;                  # IPv4 HTTP
-  #listen 443 ssl http2;      # uncomment to enable IPv4 HTTPS + HTTP/2
-  #listen [::]:80;            # uncomment to enable IPv6 HTTP
-  #listen [::]:443 ssl http2; # uncomment to enable IPv6 HTTPS + HTTP/2
-  server_name example.com;
+Restart nginx<br/>
+<code>sudo systemctl restart nginx.service</code><br/>
 
-  access_log  /var/log/gitlab/nginx_access.log;
-  error_log   /var/log/gitlab/nginx_error.log;
+Run gitlab<br/>
 
-  #ssl_certificate ssl/example.com.crt;
-  #ssl_certificate_key ssl/example.com.key;
-
-  location ~ ^/(assets)/ {
-    root /usr/share/webapps/gitlab/public;
-    gzip_static on; # to serve pre-gzipped version
-    expires max;
-    add_header Cache-Control public;
-  }
-
-  location / {
-      # unlimited upload size in nginx (so the setting in GitLab applies)
-      client_max_body_size 0;
-
-      # proxy timeout should match the timeout value set in /etc/webapps/gitlab/puma.rb
-      proxy_read_timeout 60;
-      proxy_connect_timeout 60;
-      proxy_redirect off;
-
-      proxy_set_header Host $http_host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;
-
-      #proxy_set_header X-Forwarded-Ssl on;
-
-      proxy_pass http://gitlab-workhorse;
-  }
-
-  error_page 404 /404.html;
-  error_page 422 /422.html;
-  error_page 500 /500.html;
-  error_page 502 /502.html;
-  error_page 503 /503.html;
-  location ~ ^/(404|422|500|502|503)\.html$ {
-    root /usr/share/webapps/gitlab/public;
-    internal;
-  }
-}
-
-Add gitlab site to nginx
-[RUN] vim /etc/nginx/nginx.conf
-[EDIT ADD IN HTTP BLOCK]
-include /etc/nginx/sites-available/*;
-
-Restart nginx
-[RUN] sudo systemctl restart nginx.service
-
-Run gitlab
-
-start gitlab service target
-[RUN] sudo systemctl enable gitlab.target
-[RUN] sudo systemctl start gitlab.target
+start gitlab service target<br/>
+<code>sudo systemctl enable gitlab.target</code><br/>
+<code>sudo systemctl start gitlab.target</code><br/>
 </p>
 
-    <li>run gitlab</li>
-<br/>
+<h3>6- run gitlab</h3>
 <p>
 Visit localhost or server ip
 </p>
-</ol>
