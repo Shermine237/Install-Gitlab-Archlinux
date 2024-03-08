@@ -113,7 +113,7 @@ Run gitlab-gitaly.service<br/>
 
 Initialize gitlab database<br/>
 <code>cd /usr/share/webapps/gitlab</code><br/>
-<code>sudo -u gitlab $(cat environment | xargs) bundle-2.7 exec rake gitlab:setup</code>
+<code>sudo -u gitlab $(cat environment | xargs) bundle exec rake gitlab:setup </code>
 </p>
 
 <h3>5- Nginx</h3>
