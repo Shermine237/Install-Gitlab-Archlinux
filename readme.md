@@ -15,6 +15,10 @@
 <p>
 Install postgres<br/>
 <code>sudo pacman -Sy postgresql</code>
+<code>sudo passwd postgres</code>
+<code>su - postgres</code>
+<code>initdb -D /var/lib/postgres/data</code>
+<code>su - $admin-user</code>
 
 Run service<br/>
 <code>sudo systemctl enable postgresql.service</code><br/>
