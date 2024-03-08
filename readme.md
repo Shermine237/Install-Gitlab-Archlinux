@@ -15,8 +15,11 @@
 <p>
 Install postgres<br/>
 <code>sudo pacman -Sy postgresql</code><br/>
+Set a password to postgres user<br/>
 <code>sudo passwd postgres</code><br/>
+Login to postgres<br/>
 <code>su - postgres</code><br/>
+Init database<br/>
 <code>initdb -D /var/lib/postgres/data</code><br/>
 <code>su - $admin-user</code>
 
@@ -24,16 +27,8 @@ Run service<br/>
 <code>sudo systemctl enable postgresql.service</code><br/>
 <code>sudo systemctl start postgresql.service</code><br/>
 
-Set a password to postgres user<br/>
-<code>sudo passwd postgres</code><br/>
-
-Login to postgres<br/>
-<code>su -l postgres</code><br/>
-
-Init database<br/>
-<code>initdb -D /var/lib/postgres/data</code><br/>
-
 Create gitlab database and user<br/>
+<code>su - postgres</code><br/>
 <code>psql -d template1</code><br/>
 <code>CREATE USER gitlab WITH PASSWORD 'your_password_here';</code><br/>
 <code>ALTER USER gitlab SUPERUSER;</code><br/>
