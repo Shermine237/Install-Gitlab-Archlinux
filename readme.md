@@ -42,7 +42,7 @@ Install redis<br/>
 <code>sudo pacman -Sy redis</code><br/>
 
 Configuration<br/>
-<code>vim /etc/redis/redis.conf</code><br/>
+<code>sudo vim /etc/redis/redis.conf</code><br/>
 [EDIT] unixsocket /run/redis/redis.sock<br/>
 [EDIT] unixsocketperm 770
 
