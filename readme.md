@@ -14,10 +14,10 @@
 <h3>1- Postgres</h3>
 <p>
 Install postgres<br/>
-<code>sudo pacman -Sy postgresql</code>
-<code>sudo passwd postgres</code>
-<code>su - postgres</code>
-<code>initdb -D /var/lib/postgres/data</code>
+<code>sudo pacman -Sy postgresql</code><br/>
+<code>sudo passwd postgres</code><br/>
+<code>su - postgres</code><br/>
+<code>initdb -D /var/lib/postgres/data</code><br/>
 <code>su - $admin-user</code>
 
 Run service<br/>
